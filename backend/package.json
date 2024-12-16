@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Pritam",
+    "email": "pritammandal1717@gmail.com",
+    "url": "https://github.com/pritammandal1717/PaymentApp"
+  },
+  "license": "ISC",
+  "description": "Payment App backend",
+  "dependencies": {
+    "@prisma/client": "^6.0.1",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.6",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.1.7",
+    "twilio": "^5.3.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "prisma": "^6.0.1"
+  }
+}

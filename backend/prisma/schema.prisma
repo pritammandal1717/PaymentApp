@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(cuid())
+  phone    String   @unique
+  email    String   @unique
+  password String
+  name     String
+  accounts Account?
+  category String   @default("others")
+  transactions Transaction[]
+  relationships Relationship[] @relation("UserRelationships")
+  relatedTo    Relationship[] @relation("RelationToUser")
+  createdAt DateTime 
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Relationship {
+  id         String   @id @default(cuid())
+  userId     String   
+  user       User     @relation("UserRelationships", fields: [userId], references: [id])
+  relatedUserId String
+  relatedUser User    @relation("RelationToUser", fields: [relatedUserId], references: [id])
+  type       String   
+  createdAt  DateTime 
+
+  @@unique([userId, relatedUserId])
+}
+
+model Account {
+  id       String @id @default(cuid())
+  name     String
+  userId   String @unique
+  balance  Float
+  user     User   @relation(fields: [userId], references: [id])
+  transaction Transaction[]
+
+  @@map("accounts")
+}
+
+model Transaction {
+  id       String @id @default(cuid())
+  amount   String 
+  status   String
+  billingAddress String
+  accountId      String
+  account  Account @relation(fields: [accountId], references: [id])
+  userId   String
+  user     User    @relation(fields: [userId], references: [id])
+  createdAt DateTime 
+
+  @@map("transactions")
+}
