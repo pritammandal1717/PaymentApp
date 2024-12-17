@@ -14,7 +14,6 @@ function Verify() {
     const navigate = useNavigate();
     const [disabled, setDisabled] = useState(true);
     const [otp, setOtp] = useState('');
-    console.log(otp)
     return (
         <>
             <div className='z-0 w-screen h-screen bg-[url(/bg-auth.jpg)] blur-sm bg-cover'></div>

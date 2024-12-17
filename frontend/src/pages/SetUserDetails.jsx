@@ -80,7 +80,6 @@ function SetUserDetails() {
 }
 
 function User({ user, handleItemClick }) {
-  const navigate = useNavigate();
   return (
     <>
       <div className="mt-5 flex flex-row items-center justify-between cursor-pointer">

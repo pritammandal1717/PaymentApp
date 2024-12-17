@@ -43,9 +43,9 @@ function Signup() {
           <div className="w-full flex flex-col mt-5">
             <Button className="w-full bg-cyan-600  hover:bg-slate-300 hover:hover:text-cyan-700 transition-all" children={"Sign Up"} onClick={async () => {
               const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
-                fullName,
-                mobileNumber,
-                username,
+                name : fullName,
+                phone : mobileNumber,
+                email : username,
                 password
               })
               localStorage.setItem("token", response.data.token)

@@ -55,7 +55,7 @@ function User({ user, handleItemClick }) {
         </div>
         <div>
           <Button className="bg-cyan-600" children={"Send Money"} onClick={() => {
-            navigate("/send?id=" + user.id + "&name=" + user.name)
+            navigate("/send?id=" + user.user.id + "&name=" + user.user.name)
           }} />
         </div>
       </div>

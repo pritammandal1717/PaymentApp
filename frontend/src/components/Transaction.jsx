@@ -13,7 +13,7 @@ function Transaction() {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 }
             }).catch(() => {
-                navigate("/signin")
+                navigate("/")
             })
             setTransactions(response.data);
         })()
