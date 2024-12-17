@@ -16,12 +16,6 @@ function NavBar() {
       }
     },
     {
-      name: 'Settings', onClick: () => {
-        localStorage.removeItem("token")
-        navigate("/")
-      }
-    },
-    {
       name: 'Sign out', onClick: () => {
         localStorage.removeItem("token")
         navigate("/")
@@ -45,16 +39,16 @@ function NavBar() {
     <div className="top-0 flex flex-row justify-between px-5 md:px-20 items-center bg-black border-b-2 border-b-gray-600">
       <p className="text-slate-300 font-semibold text-2xl my-5">PAYHere</p>
       <div className="">
-        <Button className="bg-transparent text-lg mx-10" children={"Dashboard"} onClick={
+        <Button className="bg-transparent text-lg mx-10 hover:border hover:delay-100" children={"Dashboard"} onClick={
           () => navigate("/dashboard")
         } />
-        <Button className="bg-transparent text-lg mx-10" children={"Send Money"} onClick={
+        <Button className="bg-transparent text-lg mx-10 hover:border hover:delay-100" children={"Send Money"} onClick={
           () => navigate("/sendmoney")
         } />
-        <Button className="bg-transparent text-lg mx-10" children={"Set User Details"} onClick={
+        <Button className="bg-transparent text-lg mx-10 hover:border hover:delay-100" children={"Set User Details"} onClick={
           () => navigate("/setuserdetails")
         }/>
-        <Button className="bg-transparent text-lg mx-10" children={"Analysis"} onClick={
+        <Button className="bg-transparent text-lg mx-10 hover:border hover:delay-100" children={"Analysis"} onClick={
           () => navigate("/analysis")
         }/>
       </div>

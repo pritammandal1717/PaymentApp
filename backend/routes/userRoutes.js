@@ -274,12 +274,17 @@ router.get("/bulk", authMiddleware, async (req, res) => {
         },
       },
     });
-    const users = relatedUser.map((relation) => relation.relatedUser);
+    const users = relatedUser.map((relation) => {
+      return ({
+        type : relation.type,
+        user: relation.relatedUser
+      })
+    });
     if (users.length > 0) {
       const filteredUsers = users.filter((user) => {
         if (
-          user.name.toLowerCase().includes(normalizedFilter) ||
-          user.phone.includes(normalizedFilter)
+          user.user.name.toLowerCase().includes(normalizedFilter) ||
+          user.user.phone.includes(normalizedFilter)
         ) {
           return true;
         }
@@ -450,6 +455,42 @@ router.post("/users-by-category", authMiddleware, async (req, res) => {
   } catch {() => {
     res.status(403).json({
       message : "Error while fetching user..."
+    })
+  }}
+})
+
+router.get("/category-count", authMiddleware, async (req, res) => {
+  try {
+    const users = await prisma.relationship.findMany({
+      where: {
+        userId : req.userId
+      },
+      include : {
+        relatedUser : {
+          select : {
+            name :true
+          }
+        }
+      }
+    })
+    if(users.length > 0){
+      const groupedUsers = users.reduce((category, user) => {
+        const type = user.type;
+        if(!category[type]){
+          category[type] = []
+        }
+        category[type].push(user.relatedUser.name)
+        return category
+      }, {})
+      return res.json(groupedUsers)
+    }else {
+      return res.json({
+        message : "No users found"
+      })
+    }
+  } catch{() => {
+    res.status(403).json({
+      message : "Error while fecthing users"
     })
   }}
 })
