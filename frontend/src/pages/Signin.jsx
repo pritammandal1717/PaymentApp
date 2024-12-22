@@ -1,11 +1,12 @@
 import axios from "axios"
-import BottomWarning from "../components/BottomWarning"
-import Button from "../components/Button"
-import Heading from "../components/Heading"
-import InputBox from "../components/InputBox"
-import SubHeading from "../components/SubHeading"
+import BottomWarning from "../components/global/BottomWarning"
+import Button from "../components/global/Button"
+import Heading from "../components/global/Heading"
+import InputBox from "../components/global/InputBox"
+import SubHeading from "../components/global/SubHeading"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 
 function Signin() {
   const [email, setEmail] = useState("");
@@ -38,12 +39,36 @@ function Signin() {
           </div>
           <div className="w-full flex flex-col mt-5">
             <Button className="w-full bg-cyan-600 hover:bg-slate-300 hover:hover:text-cyan-700 transition-all" children={"Sign In"} onClick={async () => {
-              const response = await axios.post("http://localhost:3000/api/v1/user/signin", {
-                email,
-                password
+              toast.promise(
+                axios.post("http://localhost:3000/api/v1/user/signin", {
+                  email,
+                  password
+                }), {
+                loading: "Signing In...",
+                success: (response) => {
+                  localStorage.setItem("token", response.data.token);
+                  navigate("/dashboard");
+                  return "SignIn Successfull"
+                },
+                error: error => {
+                  if (error.response) {
+                    if (error.response.status == 411) {
+                      return "Incorrect Inputs"
+                    }
+                    else if (error.response.status == 404) {
+                      return "Email not Found"
+                    }
+                    else if (error.response.status == 401) {
+                      return "Password is wrong"
+                    }
+                    else {
+                      return "Something went wrong. Please try again."
+                    }
+                  } else {
+                    return "Internal Server Error"
+                  }
+                }
               })
-              localStorage.setItem("token", response.data.token);
-              navigate("/dashboard");
             }} />
             <div className="w-full flex-col justify-center mt-5">
               <BottomWarning children={""} buttonText={"Forgot Password ?"} to={"/signup"} />

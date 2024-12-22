@@ -5,7 +5,7 @@ import { FaIndianRupeeSign, FaS } from "react-icons/fa6";
 import { LuRefreshCcw } from "react-icons/lu";
 
 function Balance() {
-  const [balance, setBalance] = useState();
+  const [balance, setBalance] = useState("0");
   const [refresh, setRefresh] = useState(false)
   const navigate = useNavigate();
   useEffect(() => {
@@ -15,7 +15,7 @@ function Balance() {
           Authorization: "Bearer " + localStorage.getItem("token")
         }
       }).catch(() => {
-        navigate("/signin")
+        navigate("/")
       })
       setBalance(Math.round(response.data.balance));
     })()

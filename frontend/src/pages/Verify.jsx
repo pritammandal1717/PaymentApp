@@ -1,12 +1,13 @@
 import { useState } from "react";
-import BottomWarning from "../components/BottomWarning";
-import Button from "../components/Button";
-import Heading from "../components/Heading";
-import InputBox from "../components/InputBox";
-import SubHeading from "../components/SubHeading";
+import BottomWarning from "../components/global/BottomWarning";
+import Button from "../components/global/Button";
+import Heading from "../components/global/Heading";
+import InputBox from "../components/global/InputBox";
+import SubHeading from "../components/global/SubHeading";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import OtpInput from 'react-otp-input';
+import { toast } from 'sonner'
 
 function Verify() {
     const [number, setNumber] = useState("");
@@ -44,11 +45,11 @@ function Verify() {
                                         color: "#000",
                                         fontWeight: "400",
                                         caretColor: "blue"
-                                      }}
-                                      focusStyle={{
+                                    }}
+                                    focusStyle={{
                                         border: "1px solid #CFD3DB",
                                         outline: "none"
-                                      }}
+                                    }}
                                     value={otp}
                                     onChange={setOtp}
                                     numInputs={4}
@@ -58,23 +59,62 @@ function Verify() {
                             </div>
                             <div className="font-semibold text-slate-200 mt-5">
                                 <Button className="w-full bg-cyan-600" onClick={async () => {
-                                    const response = await axios.post("http://localhost:3000/api/v1/user/signin-via-otp", {
-                                        otp,
-                                        phone
-                                    }).catch((err) => {
-                                        console.log(err)
-                                    })
-                                    localStorage.setItem("token", response.data.token);
-                                    navigate("/dashboard");
+                                    toast.promise(
+                                        axios.post("http://localhost:3000/api/v1/user/signin-via-otp", {
+                                            otp,
+                                            phone
+                                        }),
+                                        {
+                                            loading: "Verifying OTP...",
+                                            success: (response) => {
+                                                localStorage.setItem("token", response.data.token);
+                                                navigate("/dashboard");
+                                                return "Signin Successful"
+                                            },
+                                            error: error => {
+                                                if (error.response) {
+                                                    if (error.response.status == 411) {
+                                                        return "OTP is wrong"
+                                                    } else if (error.response.status == 404) {
+                                                        return "User not found"
+                                                    } else {
+                                                        return "Something went wrong"
+                                                    }
+                                                } else {
+                                                    return 'Internal Server Error'
+                                                }
+                                            }
+                                        }
+                                    )
                                 }}>Submit</Button>
                             </div>
                             <div className="mt-3 flex items-center justify-center">
-                                <button className="font-medium ml-1 text-cyan-300" onClick={async () => {
-                                    await axios.post("http://localhost:3000/api/v1/user/get-otp", {
-                                        number
-                                    }).catch((err) => {
-                                        console.log(err)
-                                    })
+                                <button className="font-medium ml-1 text-cyan-300" onClick={() => {
+                                    toast.promise(
+                                        axios.post("http://localhost:3000/api/v1/user/get-otp", {
+                                            number
+                                        }
+                                        ), {
+                                        loading: "Getting OTP...",
+                                        success: (response) => {
+                                            setPhone(number)
+                                            return "OTP sent successfully. Check Your Mobile."
+                                        },
+                                        error: error => {
+                                            if (error.response) {
+                                                if (error.response.status == 404) {
+                                                    return 'No user found with this number.'
+                                                } else if (error.response.status == 410) {
+                                                    return "Error generating OTP. Please try again."
+                                                } else {
+                                                    return 'Something went wrong.'
+                                                }
+                                            } else {
+                                                return "Internal Server Error"
+                                            }
+                                        }
+                                    }
+                                    )
                                 }}>Resend OTP</button>
                             </div>
                             <div className="mt-3 flex flex-row justify-center items-center text-slate-100 font-mono">
@@ -98,13 +138,32 @@ function Verify() {
                                 setNumber(e.target.value);
                             }} />
                             <div className="font-semibold text-slate-200 my-5">
-                                <Button className="w-full bg-cyan-600 disabled:text-cyan-700" children={"Get OTP"} disabled={disabled} onClick={async () => {
-                                    await axios.post("http://localhost:3000/api/v1/user/get-otp", {
-                                        number
-                                    }).catch((err) => {
-                                        console.log(err)
-                                    })
-                                    setPhone(number)
+                                <Button className="w-full bg-cyan-600 disabled:text-cyan-700" children={"Get OTP"} disabled={disabled} onClick={() => {
+                                    toast.promise(
+                                        axios.post("http://localhost:3000/api/v1/user/get-otp", {
+                                            number
+                                        }
+                                        ), {
+                                        loading: "Getting OTP...",
+                                        success: (response) => {
+                                            setPhone(number)
+                                            return "OTP sent successfully. Check Your Mobile."
+                                        },
+                                        error: error => {
+                                            if (error.response) {
+                                                if (error.response.status == 404) {
+                                                    return 'No user found with this number.'
+                                                } else if (error.response.status == 410) {
+                                                    return "Error generating OTP. Please try again."
+                                                } else {
+                                                    return 'Something went wrong.'
+                                                }
+                                            } else {
+                                                return "Internal Server Error"
+                                            }
+                                        }
+                                    }
+                                    )
                                 }} />
                             </div>
                             <div className="w-full flex-col justify-center">

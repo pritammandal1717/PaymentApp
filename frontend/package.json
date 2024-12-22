@@ -26,7 +26,8 @@
     "react-otp-input": "^3.1.1",
     "react-router-dom": "^7.0.2",
     "router-dom": "^3.0.1",
-    "rsuite": "^5.75.0"
+    "rsuite": "^5.75.0",
+    "sonner": "^1.7.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

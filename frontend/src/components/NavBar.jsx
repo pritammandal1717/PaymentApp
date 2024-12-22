@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom"
-import Profile from "./Profile"
+import Profile from "./global/Profile"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import Button from "./Button";
+import Button from "./global/Button";
+import {toast} from 'sonner'
 
 function NavBar() {
   const [user, setUser] = useState({})
@@ -18,6 +19,7 @@ function NavBar() {
     {
       name: 'Sign out', onClick: () => {
         localStorage.removeItem("token")
+        toast.info("Logged Out")
         navigate("/")
       }
     },
@@ -29,7 +31,8 @@ function NavBar() {
           Authorization: "Bearer " + localStorage.getItem("token")
         }
       }).catch(() => {
-        navigate("/signin")
+        toast.info("Session Expired")
+        navigate("/")
       })
       setUser(response.data)
     })()

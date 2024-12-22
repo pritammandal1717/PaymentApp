@@ -31,7 +31,7 @@ router.post("/signup", async (req, res) => {
   const { success } = signupBody.safeParse(req.body);
   if (!success) {
     return res.status(411).json({
-      message: "Cannot Parse Request Body",
+      message: "Incorrect Input",
     });
   }
 
@@ -42,7 +42,7 @@ router.post("/signup", async (req, res) => {
       },
     });
     if (existingUser) {
-      return res.status(411).json({
+      return res.status(409).json({
         message: "Email / Phone Number Already Taken",
       });
     }
@@ -63,7 +63,7 @@ router.post("/signup", async (req, res) => {
         phone: req.body.phone,
         email: req.body.email,
         password: hashedPassword,
-        createdAt : new Date(),
+        createdAt: new Date(),
       },
     })
     .catch((err) => {
@@ -93,7 +93,8 @@ router.post("/signup", async (req, res) => {
       {
         userId,
       },
-      process.env.JWT_SECRET,{
+      process.env.JWT_SECRET,
+      {
         expiresIn: "1h",
       }
     );
@@ -102,13 +103,11 @@ router.post("/signup", async (req, res) => {
       message: "User created successfully",
       token: token,
     });
-  } catch {
-    (err) => {
+  } catch(err) {
       return res.status(500).json({
         message: "Something Went Wrong",
       });
-    };
-  }
+    }
 });
 
 const signinBody = zod.object({
@@ -154,7 +153,7 @@ router.post("/signin", async (req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn : "1h"
+        expiresIn: "1h",
       }
     );
 
@@ -162,7 +161,6 @@ router.post("/signin", async (req, res) => {
       token: token,
     });
   } catch (err) {
-    console.error("Error during signin:", err);
     return res.status(500).json({
       message: "Something went wrong",
     });
@@ -179,81 +177,78 @@ router.post("/get-otp", async (req, res) => {
         phone: phone,
       },
     });
+
     if (!user) {
-      return res.json({
+      return res.status(404).json({
         message: "No user found with this phone number",
       });
     }
-  } catch {
-    () => {
-      res.json({
-        message: "Some Went Wrong",
-      });
-    };
-  }
-  const otp = Math.round(Math.random() * (9999 - 1112) + 1112);
-  try {
-    await twilio.messages.create({
-      body: `${otp} is your One Time Password(OTP) for signin at PayHere. Don't share with anyone.`,
-      from: process.env.TWILIO_NUMBER,
-      to: "+91" + phone,
-    });
 
-    if (otp) {
+    const otp = Math.floor(Math.random() * (9999 - 1112 + 1)) + 1112;
+
+    try {
+      await twilio.messages.create({
+        body: `${otp} is your One Time Password(OTP) for signin at PayHere. Don't share with anyone.`,
+        from: process.env.TWILIO_NUMBER,
+        to: "+91" + phone,
+      });
       otpSave = otp;
       res.json({
         message: "OTP sent successfully",
       });
-    }
-  } catch {
-    (err) => {
-      res.json({
-        message: "Error during signin via otp",
-        err,
+    } catch (err) {
+      res.status(410).json({
+        message: "Error during signin via OTP",
       });
-    };
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: "Something went wrong",
+    });
   }
 });
 
 router.post("/signin-via-otp", async (req, res) => {
   const otp = req.body.otp;
   const phone = req.body.phone;
-  if (otpSave == otp) {
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          phone: phone,
-        },
-      });
-      if (user) {
-        const token = jwt.sign({
-          userId : user.id
-        }, process.env.JWT_SECRET, {
-          expiresIn: "1h",
-        });
-        res.json({
-          message: "Signin via otp successful",
-          token,
-        });
-      }
-      else {
-        return res.json({
-          message: "User not found",
-        })
-      }
-    } catch {
-      () => {
-        res.json({
-          message: "Error while signin via otp",
-        });
-      };
-    }
-  } else {
-    return res.json({
+  if (otpSave != otp) {
+    return res.status(411).json({
       message: "Please enter a valid OTP",
-    })
+    });
+  }
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        phone: phone
+      },
+    });
+
+    if (user) {
+      const token = jwt.sign(
+        {
+          userId: user.id,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
+      return res.json({
+        message: "Signin via otp successful",
+        token,
+      });
+    } else {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error while signin via otp",
+    });
   }
 });
+
 router.get("/bulk", authMiddleware, async (req, res) => {
   const filter = req.query.filter || "";
   const normalizedFilter = filter.trim().toLowerCase();
@@ -275,10 +270,10 @@ router.get("/bulk", authMiddleware, async (req, res) => {
       },
     });
     const users = relatedUser.map((relation) => {
-      return ({
-        type : relation.type,
-        user: relation.relatedUser
-      })
+      return {
+        type: relation.type,
+        user: relation.relatedUser,
+      };
     });
     if (users.length > 0) {
       const filteredUsers = users.filter((user) => {
@@ -402,27 +397,29 @@ router.post("/search-by-phone", authMiddleware, async (req, res) => {
   const phone = req.body.phone;
   try {
     const user = await prisma.user.findUnique({
-      where : {
-        phone : phone
+      where: {
+        phone: phone,
       },
-    })
+    });
 
-    if(user) {
+    if (user) {
       return res.json({
         id: user.id,
         name: user.name,
       });
     } else {
       return res.json({
-        message: "No users found"
-      })
+        message: "No users found",
+      });
     }
-  } catch {() => {
-    res.json({
-      message : "Error while fecthing user"
-    })
-  }}
-})
+  } catch {
+    () => {
+      res.json({
+        message: "Error while fecthing user",
+      });
+    };
+  }
+});
 
 router.post("/users-by-category", authMiddleware, async (req, res) => {
   const category = req.body.category;
@@ -430,69 +427,73 @@ router.post("/users-by-category", authMiddleware, async (req, res) => {
     const users = await prisma.relationship.findMany({
       where: {
         userId: req.userId,
-        type : category
+        type: category,
       },
-      include : {
-        relatedUser : {
-          select : {
-            name : true,
+      include: {
+        relatedUser: {
+          select: {
+            name: true,
             email: true,
             phone: true,
-          }
-        }
-      }
-    })
+          },
+        },
+      },
+    });
 
-    if(users.length > 0){
+    if (users.length > 0) {
       return res.json({
-        users : users
-      })
+        users: users,
+      });
     } else {
       return res.status(404).json({
-        messsage : "No user found"
-      })
+        messsage: "No user found",
+      });
     }
-  } catch {() => {
-    res.status(403).json({
-      message : "Error while fetching user..."
-    })
-  }}
-})
+  } catch {
+    () => {
+      res.status(403).json({
+        message: "Error while fetching user...",
+      });
+    };
+  }
+});
 
 router.get("/category-count", authMiddleware, async (req, res) => {
   try {
     const users = await prisma.relationship.findMany({
       where: {
-        userId : req.userId
+        userId: req.userId,
       },
-      include : {
-        relatedUser : {
-          select : {
-            name :true
-          }
-        }
-      }
-    })
-    if(users.length > 0){
+      include: {
+        relatedUser: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    if (users.length > 0) {
       const groupedUsers = users.reduce((category, user) => {
         const type = user.type;
-        if(!category[type]){
-          category[type] = []
+        if (!category[type]) {
+          category[type] = [];
         }
-        category[type].push(user.relatedUser.name)
-        return category
-      }, {})
-      return res.json(groupedUsers)
-    }else {
+        category[type].push(user.relatedUser.name);
+        return category;
+      }, {});
+      return res.json(groupedUsers);
+    } else {
       return res.json({
-        message : "No users found"
-      })
+        message: "No users found",
+      });
     }
-  } catch{() => {
-    res.status(403).json({
-      message : "Error while fecthing users"
-    })
-  }}
-})
+  } catch {
+    () => {
+      res.status(403).json({
+        message: "Error while fecthing users",
+      });
+    };
+  }
+});
 
 module.exports = router;

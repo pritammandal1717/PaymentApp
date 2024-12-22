@@ -1,12 +1,13 @@
 import { useState } from "react";
-import Button from "../components/Button";
-import InputBox from "../components/InputBox";
+import Button from "../components/global/Button";
+import InputBox from "../components/global/InputBox";
 import NavBar from "../components/NavBar"
-import Heading from "../components/Heading";
-import SubHeading from "../components/SubHeading";
+import Heading from "../components/global/Heading";
+import SubHeading from "../components/global/SubHeading";
 import axios from 'axios';
-import Profile from "../components/Profile";
+import Profile from "../components/global/Profile";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/global/Footer";
 
 function SerchUser() {
   const [phone, setPhone] = useState("");
@@ -79,6 +80,7 @@ function SerchUser() {
             </div>
           </div>
         </div >
+        <Footer />
       </div >
     </>
   )

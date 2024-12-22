@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import ChartArea from "../components/ChartArea"
 import NavBar from "../components/NavBar"
 import axios from "axios"
+import Footer from "../components/global/Footer"
 
 function Analysis() {
   const [transactions, setTransactions] = useState([])
@@ -50,6 +51,7 @@ function Analysis() {
 
           </div>
         </div>
+        <Footer />
       </div>
     </>
   )

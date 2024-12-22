@@ -1,11 +1,12 @@
-import Heading from '../components/Heading'
-import SubHeading from '../components/SubHeading'
-import InputBox from '../components/InputBox'
-import Button from '../components/Button'
-import BottomWarning from '../components/BottomWarning'
+import Heading from '../components/global/Heading'
+import SubHeading from '../components/global/SubHeading'
+import InputBox from '../components/global/InputBox'
+import Button from '../components/global/Button'
+import BottomWarning from '../components/global/BottomWarning'
 import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 
 function Signup() {
   const [fullName, setFullName] = useState("");
@@ -41,15 +42,37 @@ function Signup() {
             }} />
           </div>
           <div className="w-full flex flex-col mt-5">
-            <Button className="w-full bg-cyan-600  hover:bg-slate-300 hover:hover:text-cyan-700 transition-all" children={"Sign Up"} onClick={async () => {
-              const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
-                name : fullName,
-                phone : mobileNumber,
-                email : username,
-                password
-              })
-              localStorage.setItem("token", response.data.token)
-              navigate("/dashboard");
+            <Button className="w-full bg-cyan-600  hover:bg-slate-300 hover:hover:text-cyan-700 transition-all" children={"Sign Up"} onClick={() => {
+              toast.promise(
+                axios.post("http://localhost:3000/api/v1/user/signup", {
+                  name: fullName,
+                  phone: mobileNumber,
+                  email: username,
+                  password
+                }),
+                {
+                  loading: "Signing Up...",
+                  success: response => {
+                    localStorage.setItem("token", response.data.token)
+                    navigate("/dashboard");
+                    return "SignUp Successfull"
+                  },
+                  error: error => {
+                    if(error.response){
+                      console.log(error.response.status)
+                      if(error.response.status == 409){
+                        return 'Email / Phone is already registered'
+                      } else if(error.response.status == 411){
+                        return 'Incorrect Inputs'
+                      } else if(error.response.status == 500){
+                        return 'Something went wrong. Please try again.'
+                      }
+                    } else {
+                      return "Internal Server Error"
+                    }
+                  }
+                }
+              )
             }} />
             <BottomWarning children={"Don't have an account ?"} buttonText={"Sign In"} to={"/"} />
           </div>

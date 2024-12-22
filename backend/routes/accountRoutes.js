@@ -28,7 +28,7 @@ router.post("/transfer", authMiddleware, async (req, res) => {
 
   if (!success) {
     return res
-      .status(400)
+      .status(411)
       .json({ message: "Invalid input", error: error.errors });
   }
 
@@ -51,7 +51,7 @@ router.post("/transfer", authMiddleware, async (req, res) => {
     }
 
     if (senderAccount.balance < amount) {
-      return res.status(400).json({ message: "Insufficient balance" });
+      return res.status(403).json({ message: "Insufficient balance" });
     }
 
     await prisma.$transaction(async (prisma) => {
@@ -140,7 +140,6 @@ router.post("/transfer", authMiddleware, async (req, res) => {
 
     res.status(200).json({ message: "Transfer successful" });
   } catch (err) {
-    console.error("Transfer error:", err);
     res
       .status(500)
       .json({ message: "Something went wrong", error: err.message });

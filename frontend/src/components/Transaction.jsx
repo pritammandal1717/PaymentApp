@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useRef, useState } from "react"
 import { LuRefreshCcw } from "react-icons/lu"
-import Profile from "./Profile"
+import Profile from "./global/Profile"
 
 function Transaction() {
     const [refresh, setRefresh] = useState(false)

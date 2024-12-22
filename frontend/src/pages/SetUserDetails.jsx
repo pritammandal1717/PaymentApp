@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
 import NavBar from "../components/NavBar"
 import { useNavigate } from "react-router-dom";
-import InputBox from "../components/InputBox";
+import InputBox from "../components/global/InputBox";
 import axios from "axios";
-import Profile from "../components/Profile";
+import Profile from "../components/global/Profile";
 import Select from "../components/Select";
 import CategoryCount from "../components/CategoryCount";
+import Footer from "../components/global/Footer";
 
 function SetUserDetails() {
   const [filter, setFilter] = useState("");
@@ -34,11 +35,11 @@ function SetUserDetails() {
   return (
     <>
       <div className="z-0 w-screen h-screen bg-[url(/bg-auth.jpg)] bg-repeat-y bg-cover"></div>
-      <div className="absolute top-0 backdrop-blur-2xl w-screen h-screen flex flex-col">
+      <div className="absolute top-0 backdrop-blur-2xl w-screen h-screen flex flex-col justify-between">
         <NavBar />
-        <div className="w-full h-[550px] px-20 flex flex-col md:flex-row justify-between items-start">
-          <div className="md:w-2/5 h-full">
-            <div className='w-full h-full flex flex-col mt-10 p-5 border-t-2 rounded-md shadow-md'>
+        <div className="w-full px-20 flex flex-col md:flex-row justify-between items-start">
+          <div className="md:w-2/5 h-[560px]">
+            <div className='w-full flex flex-col mt-10 p-5 border-t-2 rounded-md shadow-md'>
               <div className='text-xl text-slate-100'>
                 <InputBox label={"Your Knowns"} placeholder={"Search users..."} onChange={async (e) => {
                   setFilter(e.target.value);
@@ -74,6 +75,7 @@ function SetUserDetails() {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     </>
   )

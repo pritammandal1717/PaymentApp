@@ -27,7 +27,7 @@ const ChartArea = ({ chartData }) => {
       {
         label: 'Total Transaction',
         data: datas,
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        backgroundColor: 'rgb(66, 238, 219)',
         borderColor: 'rgba(125, 192, 192, 1)',
         borderWidth: 1,
       },
@@ -52,7 +52,7 @@ const ChartArea = ({ chartData }) => {
     scales: {
       x: {
         grid: {
-          color: '#fff', 
+          color: '#ababab', 
         },
         ticks: {
           color: '#fff', 
@@ -65,7 +65,7 @@ const ChartArea = ({ chartData }) => {
       },
       y: {
         grid: {
-          color: '#fff',
+          color: '#ababab',
         },
         ticks: {
           color: '#fff', 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import InputBox from './InputBox'
-import Profile from './Profile'
-import Button from './Button'
+import InputBox from './global/InputBox'
+import Profile from './global/Profile'
+import Button from './global/Button'
 import axios from 'axios'
 
 function Users() {
