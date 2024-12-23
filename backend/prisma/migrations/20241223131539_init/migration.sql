@@ -6,7 +6,7 @@ CREATE TABLE "users" (
     "password" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "category" TEXT NOT NULL DEFAULT 'others',
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
@@ -18,7 +18,7 @@ CREATE TABLE "Relationship" (
     "userId" TEXT NOT NULL,
     "relatedUserId" TEXT NOT NULL,
     "type" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Relationship_pkey" PRIMARY KEY ("id")
 );
@@ -41,7 +41,7 @@ CREATE TABLE "transactions" (
     "billingAddress" TEXT NOT NULL,
     "accountId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "transactions_pkey" PRIMARY KEY ("id")
 );
