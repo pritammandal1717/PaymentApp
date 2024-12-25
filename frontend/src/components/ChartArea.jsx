@@ -35,6 +35,7 @@ const ChartArea = ({ chartData }) => {
   };
 
   const options = {
+    drawOnChartArea: true,
     responsive: true,
     plugins: {
       legend: {
@@ -55,13 +56,14 @@ const ChartArea = ({ chartData }) => {
           color: '#ababab', 
         },
         ticks: {
-          color: '#fff', 
+          color: '#fff',
         },
         title: {
           display: true,
-          text: 'Dates',
+          text: 'Amount',
           color: '#fff',
         },
+        beginAtZero: true, // Allow both positive and negative values
       },
       y: {
         grid: {

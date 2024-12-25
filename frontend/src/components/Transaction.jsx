@@ -8,7 +8,7 @@ function Transaction() {
     const [transactions, setTransactions] = useState([])
     useEffect(() => {
         (async () => {
-            const response = await axios.get("http://localhost:3000/api/v1/account/transaction-details", {
+            const response = await axios.get("https://paymentapp-sqmb.onrender.com/api/v1/account/transaction-details", {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 }
@@ -21,7 +21,7 @@ function Transaction() {
 
     transactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     return (
-        <div className="w-full flex flex-col justify-center mt-10 p-5 rounded-md border-t-2 shadow-2xl h-[520px]">
+        <div className="w-full flex flex-col justify-center mt-10 p-5 rounded-md border-t-2 shadow-2xl h-[400px] md:h-[520px]">
             <div className="flex flex-row items-center justify-between">
                 <p className="text-2xl font-bold font-mono text-slate-200">Transactions</p>
                 <button onClick={() => {

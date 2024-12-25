@@ -10,7 +10,7 @@ function Balance() {
   const navigate = useNavigate();
   useEffect(() => {
     (async () => {
-      const response = await axios.get("http://localhost:3000/api/v1/account/balance", {
+      const response = await axios.get("https://paymentapp-sqmb.onrender.com/api/v1/account/balance", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
         }

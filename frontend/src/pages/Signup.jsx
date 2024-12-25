@@ -14,6 +14,7 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  
   return (
     <>
       <div className='z-0 w-screen h-screen bg-[url(/bg-auth.jpg)] blur-sm bg-cover'></div>
@@ -21,8 +22,8 @@ function Signup() {
         <div className='rounded-md border-t-2 shadow-2xl p-8'>
           <div className="">
             <Heading children={"Sign Up"} />
-            <SubHeading children={"Enter your information to create an"} />
-            <SubHeading children={"account"} />
+            <SubHeading children={"Enter your information to create "} />
+            <SubHeading children={"an account"} />
           </div>
           <div>
             <InputBox type={"text"} label={"Full Name"} placeholder={"John Doe"} onChange={e => {
@@ -41,10 +42,10 @@ function Signup() {
               setPassword(e.target.value);
             }} />
           </div>
-          <div className="w-full flex flex-col mt-5">
-            <Button className="w-full bg-cyan-600  hover:bg-slate-300 hover:hover:text-cyan-700 transition-all" children={"Sign Up"} onClick={() => {
+          <div className="flex flex-col mt-5">
+            <Button className="bg-cyan-600  hover:bg-slate-300 hover:hover:text-cyan-700 transition-all" children={"Sign Up"} onClick={() => {
               toast.promise(
-                axios.post("http://localhost:3000/api/v1/user/signup", {
+                axios.post("https://paymentapp-sqmb.onrender.com/api/v1/user/signup", {
                   name: fullName,
                   phone: mobileNumber,
                   email: username,
@@ -74,7 +75,7 @@ function Signup() {
                 }
               )
             }} />
-            <BottomWarning children={"Don't have an account ?"} buttonText={"Sign In"} to={"/"} />
+            <BottomWarning children={"Already have an account ?"} buttonText={"Sign In"} to={"/"} />
           </div>
         </div>
       </div>

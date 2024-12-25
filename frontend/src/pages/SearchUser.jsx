@@ -17,10 +17,10 @@ function SerchUser() {
   return (
     <>
       <div className="z-0 w-screen h-screen bg-[url(/bg-auth.jpg)] bg-repeat-y bg-cover"></div>
-      <div className="absolute top-0 backdrop-blur-2xl w-screen h-screen flex flex-col">
+      <div className="absolute top-0 backdrop-blur-2xl w-screen h-screen flex flex-col justify-between">
         <NavBar />
-        <div className="h-full flex flex-col justify-center items-center">
-          <div className="flex flex-col justify-center items-center p-8 shadow-md rounded-md border-t-2">
+        <div className="flex justify-center items-center">
+          <div className="flex flex-col justify-center items-center p-3 md:p-5 shadow-md rounded-md border-t-2">
             <Heading children={"Send Money"} />
             <SubHeading children={"Enter a mobile number to search"} />
             <SubHeading children={"PayHere Users"} />
@@ -43,7 +43,7 @@ function SerchUser() {
                   let config = {
                     method: 'post',
                     maxBodyLength: Infinity,
-                    url: 'http://localhost:3000/api/v1/user/search-by-phone',
+                    url: 'https://paymentapp-sqmb.onrender.com/api/v1/user/search-by-phone',
                     headers: {
                       'Content-Type': 'application/json',
                       'Authorization': 'Bearer ' + localStorage.getItem('token')

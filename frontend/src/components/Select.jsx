@@ -16,7 +16,7 @@ export default function Select({ label, children, id, setRefresh }) {
                 transition
                 className="absolute right-0 z-10 mt-2 w-30 origin-top-right rounded-md bg-transparent shadow-2xl ring-1 ring-white/30 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
             >
-                <div className="py-1">
+                <div className="py-1 flex flex-row md:flex-col">
                     <MenuItem>
                         <button
                             type="submit"
@@ -27,7 +27,7 @@ export default function Select({ label, children, id, setRefresh }) {
                                 let config = {
                                     method: 'put',
                                     maxBodyLength: Infinity,
-                                    url: 'http://localhost:3000/api/v1/user/update-relationship-type',
+                                    url: 'https://paymentapp-sqmb.onrender.com/api/v1/user/update-relationship-type',
                                     headers: {
                                         'Content-Type': 'application/json',
                                         'Authorization': "Bearer " + localStorage.getItem("token")
@@ -57,7 +57,7 @@ export default function Select({ label, children, id, setRefresh }) {
                                 let config = {
                                     method: 'put',
                                     maxBodyLength: Infinity,
-                                    url: 'http://localhost:3000/api/v1/user/update-relationship-type',
+                                    url: 'https://paymentapp-sqmb.onrender.com/api/v1/user/update-relationship-type',
                                     headers: {
                                         'Content-Type': 'application/json',
                                         'Authorization': "Bearer " + localStorage.getItem("token")
@@ -87,7 +87,7 @@ export default function Select({ label, children, id, setRefresh }) {
                                 let config = {
                                     method: 'put',
                                     maxBodyLength: Infinity,
-                                    url: 'http://localhost:3000/api/v1/user/update-relationship-type',
+                                    url: 'https://paymentapp-sqmb.onrender.com/api/v1/user/update-relationship-type',
                                     headers: {
                                         'Content-Type': 'application/json',
                                         'Authorization': "Bearer " + localStorage.getItem("token")
@@ -117,7 +117,7 @@ export default function Select({ label, children, id, setRefresh }) {
                                 let config = {
                                     method: 'put',
                                     maxBodyLength: Infinity,
-                                    url: 'http://localhost:3000/api/v1/user/update-relationship-type',
+                                    url: 'https://paymentapp-sqmb.onrender.com/api/v1/user/update-relationship-type',
                                     headers: {
                                         'Content-Type': 'application/json',
                                         'Authorization': "Bearer " + localStorage.getItem("token")

@@ -16,7 +16,7 @@ function App() {
 
   return (
     <>
-      <Toaster position="top-right" expand={false} richColors icons={true}/>
+      <Toaster position="top-right" expand={false} icons={true}/>
       <BrowserRouter>
         <Routes>
           <Route path={'/error'} element={<NotFound />} />

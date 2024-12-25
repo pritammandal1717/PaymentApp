@@ -7,7 +7,7 @@ function CategoryCount({refresh, setRefresh}) {
     const navigate = useNavigate()
     useEffect(() => {
         (async () => {
-            const response = await axios.get("http://localhost:3000/api/v1/user/category-count", {
+            const response = await axios.get("https://paymentapp-sqmb.onrender.com/api/v1/user/category-count", {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("token")
                 }
@@ -26,11 +26,11 @@ function CategoryCount({refresh, setRefresh}) {
     }
     return (
         <>
-            <div className="flex flex-row justify-between p-5 mt-10 border-t-2 rounded-md shadow-md">
-                <div className="px-8 py-3 bg-cyan-800 text-slate-100 rounded-md m-2 font-mono">Family({count.family})</div>
-                <div className="px-8 py-3 bg-cyan-800 text-slate-100 rounded-md m-2 font-mono">Friend({count.friend})</div>
-                <div className="px-8 py-3 bg-cyan-800 text-slate-100 rounded-md m-2 font-mono">Business({count.business})</div>
-                <div className="px-8 py-3 bg-cyan-800 text-slate-100 rounded-md m-2 font-mono">Others({count.other})</div>
+            <div className="w-full flex flex-row flex-wrap justify-between p-3 mt-10 border-t-2 rounded-md shadow-md">
+                <div className="p-2 bg-cyan-800 text-slate-100 rounded-md m-2 font-mono">Family({count.family})</div>
+                <div className="p-2 bg-cyan-800 text-slate-100 rounded-md m-2 font-mono">Friend({count.friend})</div>
+                <div className="p-2 bg-cyan-800 text-slate-100 rounded-md m-2 font-mono">Business({count.business})</div>
+                <div className="p-2 bg-cyan-800 text-slate-100 rounded-md m-2 font-mono">Others({count.other})</div>
             </div>
         </>
     )

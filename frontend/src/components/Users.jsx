@@ -17,11 +17,12 @@ function Users() {
 
   useEffect(() => {
     (async () => {
-      const response = await axios.get("http://localhost:3000/api/v1/user/bulk?filter=" + filter, {
+      const response = await axios.get("https://paymentapp-sqmb.onrender.com/api/v1/user/bulk?filter=" + filter, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token")
         }
       }).catch(() => {
+        toast.info("Session Expired")
         navigate("/")
       })
       setUsers(response.data.users)
@@ -29,7 +30,7 @@ function Users() {
 
   }, [filter, selectedUser])
   return (
-    <div className='w-full h-full flex flex-col mt-10 p-5 border-t-2 rounded-md shadow-md'>
+    <div className='w-full h-full flex flex-col mt-10 p-2 md:p-5 border-t-2 rounded-md shadow-md'>
       <div className='text-xl text-slate-100'>
         <InputBox label={"Your Knowns"} placeholder={"Search users..."} onChange={async (e) => {
           setFilter(e.target.value);
@@ -54,7 +55,7 @@ function User({ user, handleItemClick }) {
           <p className='ml-2 font-medium text-md text-slate-200' >{user.user.name}</p>
         </div>
         <div>
-          <Button className="bg-cyan-600" children={"Send Money"} onClick={() => {
+          <Button className="bg-cyan-600 font-semibold" children={"Send Money"} onClick={() => {
             navigate("/send?id=" + user.user.id + "&name=" + user.user.name)
           }} />
         </div>

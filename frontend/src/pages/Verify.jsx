@@ -15,6 +15,13 @@ function Verify() {
     const navigate = useNavigate();
     const [disabled, setDisabled] = useState(true);
     const [otp, setOtp] = useState('');
+
+    useEffect(() => {
+        if(localStorage.getItem('token')){
+          navigate("/dashboard")
+        }
+      })
+
     return (
         <>
             <div className='z-0 w-screen h-screen bg-[url(/bg-auth.jpg)] blur-sm bg-cover'></div>
@@ -60,7 +67,7 @@ function Verify() {
                             <div className="font-semibold text-slate-200 mt-5">
                                 <Button className="w-full bg-cyan-600" onClick={async () => {
                                     toast.promise(
-                                        axios.post("http://localhost:3000/api/v1/user/signin-via-otp", {
+                                        axios.post("https://paymentapp-sqmb.onrender.com/api/v1/user/signin-via-otp", {
                                             otp,
                                             phone
                                         }),
@@ -91,7 +98,7 @@ function Verify() {
                             <div className="mt-3 flex items-center justify-center">
                                 <button className="font-medium ml-1 text-cyan-300" onClick={() => {
                                     toast.promise(
-                                        axios.post("http://localhost:3000/api/v1/user/get-otp", {
+                                        axios.post("https://paymentapp-sqmb.onrender.com/api/v1/user/get-otp", {
                                             number
                                         }
                                         ), {
@@ -140,7 +147,7 @@ function Verify() {
                             <div className="font-semibold text-slate-200 my-5">
                                 <Button className="w-full bg-cyan-600 disabled:text-cyan-700" children={"Get OTP"} disabled={disabled} onClick={() => {
                                     toast.promise(
-                                        axios.post("http://localhost:3000/api/v1/user/get-otp", {
+                                        axios.post("https://paymentapp-sqmb.onrender.com/api/v1/user/get-otp", {
                                             number
                                         }
                                         ), {
