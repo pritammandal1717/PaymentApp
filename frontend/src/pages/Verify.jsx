@@ -16,12 +16,6 @@ function Verify() {
     const [disabled, setDisabled] = useState(true);
     const [otp, setOtp] = useState('');
 
-    useEffect(() => {
-        if(localStorage.getItem('token')){
-          navigate("/dashboard")
-        }
-      })
-
     return (
         <>
             <div className='z-0 w-screen h-screen bg-[url(/bg-auth.jpg)] blur-sm bg-cover'></div>
